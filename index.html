@@ -187,7 +187,7 @@
             const adjustedWeightLossFactor = ((initialWeight - currentWeight) / initialWeight) * heightFactor;
             const adjustedFatLossFactor = ((initialFatMass - currentFatMass) / initialFatMass);
 
-            const compositeScore = (0.5 * adjustedWeightLossFactor) + (0.5 * adjustedFatLossFactor);
+            const compositeScore = (0.7 * adjustedWeightLossFactor) + (0.3 * adjustedFatLossFactor);
 
             document.getElementById('results').innerHTML = `<p>Composite Score: ${compositeScore.toFixed(2)}</p>`;
         }
