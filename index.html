@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +35,7 @@
             font-weight: bold;
             margin-bottom: 5px;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 10px;
             font-size: 14px;
@@ -128,6 +127,13 @@
                 <label for="currentBodyFat">Current Body Fat (%):</label>
                 <input type="number" id="currentBodyFat" step="0.1" required>
             </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender">
+                    <option value="1.0">Male</option>
+                    <option value="1.15">Female</option>
+                </select>
+            </div>
             <button type="button" onclick="calculateResults()">Calculate</button>
             <button type="button" onclick="submitResult()">Submit</button>
         </form>
@@ -143,29 +149,6 @@
             </thead>
             <tbody></tbody>
         </table>
-
-        <div class="formula">
-            <h3>Formula Reference:</h3>
-            <p><strong>Composite Score:</strong></p>
-            <p>Composite Score = 0.7 × Adjusted Weight Loss Factor + 0.3 × Adjusted Fat Loss Factor</p>
-            <p><strong>Adjusted Weight Loss Factor:</strong></p>
-            <p>(Initial Weight - Current Weight) / Initial Weight × Height Factor</p>
-            <p><strong>Adjusted Fat Loss Factor:</strong></p>
-            <p>(Initial Fat Mass - Current Fat Mass) / Initial Fat Mass × Age Factor × Gender Factor</p>
-            <p><strong>Height Factor:</strong></p>
-            <p>1 + (Height - 175) / 100 × 0.2</p>
-            <p><strong>Age Factor:</strong></p>
-            <p>1 + (Age - 35) / 100 × 0.3</p>
-            <p><strong>Gender Factor:</strong></p>
-            <p>1.0 for males, 1.15 for females</p>
-            <p><strong>Fat Mass:</strong></p>
-            <p>Weight × Body Fat Percentage</p>
-        </div>
-
-        <div class="form-group">
-            <button onclick="clearAll()">Clear All</button>
-            <button onclick="clearLast()">Clear Last Entry</button>
-        </div>
     </div>
 
     <script>
@@ -178,6 +161,7 @@
             const currentWeight = parseFloat(document.getElementById('currentWeight').value);
             const initialBodyFat = parseFloat(document.getElementById('initialBodyFat').value) / 100;
             const currentBodyFat = parseFloat(document.getElementById('currentBodyFat').value) / 100;
+            const genderFactor = parseFloat(document.getElementById('gender').value);
 
             const heightFactor = 1 + (height - 175) / 100 * 0.2;
 
@@ -185,7 +169,7 @@
             const currentFatMass = currentWeight * currentBodyFat;
 
             const adjustedWeightLossFactor = ((initialWeight - currentWeight) / initialWeight) * heightFactor;
-            const adjustedFatLossFactor = ((initialFatMass - currentFatMass) / initialFatMass);
+            const adjustedFatLossFactor = ((initialFatMass - currentFatMass) / initialFatMass) * genderFactor;
 
             const compositeScore = (0.7 * adjustedWeightLossFactor) + (0.3 * adjustedFatLossFactor);
 
@@ -205,17 +189,6 @@
 
                 document.getElementById('calculator').reset();
                 document.getElementById('results').innerHTML = '';
-            }
-        }
-
-        function clearAll() {
-            resultsTable.innerHTML = '';
-        }
-
-        function clearLast() {
-            const rows = resultsTable.rows;
-            if (rows.length > 0) {
-                resultsTable.deleteRow(rows.length - 1);
             }
         }
     </script>
