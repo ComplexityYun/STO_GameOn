@@ -148,7 +148,7 @@
             <h3>Formula Reference:</h3>
             <p><strong>Composite Score:</strong></p>
             <p>Composite Score = w × Adjusted Weight Loss Factor + (1 - w) × Adjusted Fat Loss Factor</p>
-            <p>w = 0.7</p>
+            <p>w = <span id="weightFactorDisplay">0.7</span></p>
             <p><strong>Adjusted Weight Loss Factor:</strong></p>
             <p>(Initial Weight - Current Weight) / Initial Weight × Height Factor</p>
             <p><strong>Adjusted Fat Loss Factor:</strong></p>
@@ -188,8 +188,13 @@
             const adjustedWeightLossFactor = ((initialWeight - currentWeight) / initialWeight) * heightFactor;
             const adjustedFatLossFactor = ((initialFatMass - currentFatMass) / initialFatMass);
 
-            const compositeScore = (0.7 * adjustedWeightLossFactor) + (0.3 * adjustedFatLossFactor);
+            const w = 0.7;
+            const compositeScore = (w * adjustedWeightLossFactor) + ((1 - w) * adjustedFatLossFactor);
 
+            // Update formula reference
+            document.getElementById('weightFactorDisplay').textContent = w;
+
+            // Display the calculated composite score
             document.getElementById('results').innerHTML = `<p>Composite Score: ${compositeScore.toFixed(2)}</p>`;
         }
 
