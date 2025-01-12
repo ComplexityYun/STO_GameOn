@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +35,7 @@
             font-weight: bold;
             margin-bottom: 5px;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 10px;
             font-size: 14px;
@@ -109,6 +108,13 @@
                 <input type="text" id="name" required>
             </div>
             <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="height">Height (cm):</label>
                 <input type="number" id="height" step="0.1" required>
             </div>
@@ -173,19 +179,21 @@
 
         function calculateResults() {
             const name = document.getElementById('name').value;
+            const gender = document.getElementById('gender').value;
             const height = parseFloat(document.getElementById('height').value);
             const initialWeight = parseFloat(document.getElementById('initialWeight').value);
             const currentWeight = parseFloat(document.getElementById('currentWeight').value);
             const initialBodyFat = parseFloat(document.getElementById('initialBodyFat').value) / 100;
             const currentBodyFat = parseFloat(document.getElementById('currentBodyFat').value) / 100;
 
+            const genderFactor = gender === 'male' ? 1.0 : 1.15;
             const heightFactor = 1 + (height - 175) / 100 * 0.2;
 
             const initialFatMass = initialWeight * initialBodyFat;
             const currentFatMass = currentWeight * currentBodyFat;
 
             const adjustedWeightLossFactor = ((initialWeight - currentWeight) / initialWeight) * heightFactor;
-            const adjustedFatLossFactor = ((initialFatMass - currentFatMass) / initialFatMass);
+            const adjustedFatLossFactor = ((initialFatMass - currentFatMass) / initialFatMass) * genderFactor;
 
             const compositeScore = (0.7 * adjustedWeightLossFactor) + (0.3 * adjustedFatLossFactor);
 
